@@ -1,0 +1,24 @@
+package postgres
+
+import (
+	"context"
+
+	"github.com/teguh522/payslip/cmd/internal/domain/user/entity"
+	"gorm.io/gorm"
+)
+
+type UserRepositoryImp struct {
+	db *gorm.DB
+}
+
+func NewUserRepositoryImp(db *gorm.DB) *UserRepositoryImp {
+	return &UserRepositoryImp{
+		db: db,
+	}
+}
+func (repo *UserRepositoryImp) CreateUser(ctx context.Context, user *entity.User) error {
+	if err := repo.db.WithContext(ctx).Save(user).Error; err != nil {
+		return err
+	}
+	return nil
+}
