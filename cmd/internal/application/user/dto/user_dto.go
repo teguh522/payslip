@@ -16,6 +16,4 @@ type CreateUserResponse struct {
 	Role      string    `json:"role"`
 	CreatedBy string    `json:"created_by"`
 	UpdatedBy string    `json:"updated_by"`
-	CreatedAt string    `json:"created_at"`
-	UpdatedAt string    `json:"updated_at"`
 }

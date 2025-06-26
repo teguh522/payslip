@@ -8,11 +8,9 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/teguh522/payslip/cmd/internal/application/user/usecase"
-	"github.com/teguh522/payslip/cmd/internal/infrastucture/http/handler"
+	"github.com/teguh522/payslip/cmd/internal/container"
 	"github.com/teguh522/payslip/cmd/internal/infrastucture/http/router"
 	"github.com/teguh522/payslip/cmd/internal/infrastucture/persistence/database"
-	"github.com/teguh522/payslip/cmd/internal/infrastucture/persistence/postgres"
 	"github.com/teguh522/payslip/cmd/internal/pkg/config"
 )
 
@@ -27,13 +25,13 @@ func main() {
 	}
 	defer database.ClosePostgreSQLGORM(dbGORM)
 
-	userRepo := postgres.NewUserRepositoryImp(dbGORM)
+	repos := container.NewRepositories(dbGORM)
 
-	createUserUseCase := usecase.NewCreateUserUseCase(userRepo)
+	usecases := container.NewUseCases(repos)
 
-	userHandler := handler.NewUserHandler(createUserUseCase)
+	userHandler := container.NewHandlers(usecases)
 
-	r := router.NewRouter(userHandler)
+	r := router.NewRouter(userHandler, cfg)
 
 	server := &http.Server{
 		Addr:    ":" + cfg.App.AppPort,

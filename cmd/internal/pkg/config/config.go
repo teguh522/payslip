@@ -9,6 +9,7 @@ import (
 
 type AppConfig struct {
 	AppPort string `mapstructure:"port"`
+	Mode    string `mapstructure:"mode"`
 }
 
 type DataBaseConfig struct {

@@ -2,16 +2,19 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/teguh522/payslip/cmd/internal/infrastucture/http/handler"
+	"github.com/teguh522/payslip/cmd/internal/container"
+	"github.com/teguh522/payslip/cmd/internal/pkg/config"
 )
 
-func NewRouter(userHandler *handler.UserHandler) *gin.Engine {
+func NewRouter(userHandler *container.Handlers, cfg *config.Config) *gin.Engine {
+	if cfg.App.Mode == "release" {
+		gin.SetMode(gin.ReleaseMode)
+	}
 	r := gin.Default()
 
-	// Grouping routes for /users
 	userRoutes := r.Group("/users")
 	{
-		userRoutes.POST("/", userHandler.CreateUser)
+		userRoutes.POST("/", userHandler.UserHandler.CreateUser)
 	}
 
 	return r

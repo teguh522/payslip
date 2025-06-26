@@ -38,7 +38,5 @@ func (uc *CreateUserUseCase) Execute(ctx context.Context, cmd command.CreateUser
 		Role:      newUser.Role,
 		CreatedBy: newUser.CreatedBy,
 		UpdatedBy: newUser.UpdatedBy,
-		CreatedAt: newUser.CreatedAt.String(),
-		UpdatedAt: newUser.UpdatedAt.String(),
 	}, nil
 }

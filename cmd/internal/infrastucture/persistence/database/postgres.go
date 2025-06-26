@@ -5,7 +5,13 @@ import (
 	"log"
 	"time"
 
-	"github.com/teguh522/payslip/cmd/internal/domain/user/entity"
+	attendance "github.com/teguh522/payslip/cmd/internal/domain/attendance/entity"
+	employeeEntity "github.com/teguh522/payslip/cmd/internal/domain/employee/entity"
+	overtime "github.com/teguh522/payslip/cmd/internal/domain/overtime/entity"
+	payroll "github.com/teguh522/payslip/cmd/internal/domain/payroll/entity"
+	payslip "github.com/teguh522/payslip/cmd/internal/domain/payslip/entity"
+	reimbursement "github.com/teguh522/payslip/cmd/internal/domain/reimbursement/entity"
+	userEntity "github.com/teguh522/payslip/cmd/internal/domain/user/entity"
 	"github.com/teguh522/payslip/cmd/internal/pkg/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -17,7 +23,7 @@ func NewPostgreSQLGORM(cfg *config.Config) (*gorm.DB, error) {
 		cfg.DataBase.DBHost, cfg.DataBase.DBUser, cfg.DataBase.DBPassword, cfg.DataBase.DBName, cfg.DataBase.DBPort, cfg.DataBase.DBSSLMode)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		Logger: logger.Default.LogMode(logger.Error),
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to database: %w", err)
@@ -28,15 +34,22 @@ func NewPostgreSQLGORM(cfg *config.Config) (*gorm.DB, error) {
 		return nil, fmt.Errorf("failed to get underlying sql.DB: %w", err)
 	}
 
-	sqlDB.SetMaxIdleConns(10)           // Maximum number of connections in the idle connection pool
-	sqlDB.SetMaxOpenConns(100)          // Maximum number of open connections to the database
-	sqlDB.SetConnMaxLifetime(time.Hour) // Maximum amount of time a connection may be reused
+	sqlDB.SetMaxIdleConns(10)
+	sqlDB.SetMaxOpenConns(100)
+	sqlDB.SetConnMaxLifetime(time.Hour)
 
 	log.Println("Successfully connected to PostgreSQL with GORM!")
 
-	// AutoMigrate (Optional but useful for development)
-	// // Hanya jalankan ini di lingkungan dev/test, jangan di production tanpa strategi migrasi yang tepat.
-	err = db.AutoMigrate(&entity.User{}) // Uncomment if you want GORM to auto-migrate your table
+	err = db.AutoMigrate(
+		&userEntity.User{},
+		&employeeEntity.Employee{},
+		&attendance.AttendancePeriod{},
+		&attendance.Attendance{},
+		&overtime.Overtime{},
+		&reimbursement.Reimbursement{},
+		&payroll.Payroll{},
+		&payslip.Payslip{},
+	)
 	if err != nil {
 		log.Printf("Failed to auto migrate database: %v", err)
 	}
