@@ -27,11 +27,13 @@ func main() {
 
 	repos := container.NewRepositories(dbGORM)
 
-	usecases := container.NewUseCases(repos)
+	usecases := container.NewUseCases(repos, cfg)
 
 	userHandler := container.NewHandlers(usecases)
 
-	r := router.NewRouter(userHandler, cfg)
+	middlewares := container.NewMiddlewares(cfg)
+
+	r := router.NewRouter(userHandler, cfg, middlewares)
 
 	server := &http.Server{
 		Addr:    ":" + cfg.App.AppPort,

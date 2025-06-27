@@ -13,7 +13,7 @@ type AttendancePeriod struct {
 	ID             uuid.UUID `gorm:"type:uuid;primary_key;default:uuid_generate_v4()"`
 	StartDate      time.Time
 	EndDate        time.Time
-	Status         string                        // "open" or "closed"
+	Status         string
 	CreatedBy      string                        `gorm:"not null"`
 	UpdatedBy      string                        `gorm:"not null"`
 	CreatedAt      time.Time                     `gorm:"autoCreateTime"`
@@ -22,4 +22,14 @@ type AttendancePeriod struct {
 	Overtimes      []overtime.Overtime           `gorm:"foreignKey:PeriodID"`
 	Reimbursements []reimbursement.Reimbursement `gorm:"foreignKey:PeriodID"`
 	Payrolls       []payRoll.Payroll             `gorm:"foreignKey:PeriodID"`
+}
+
+func NewAttendancePeriod(startDate, endDate time.Time, createdBy, updatedBy string) (*AttendancePeriod, error) {
+	return &AttendancePeriod{
+		StartDate: startDate,
+		EndDate:   endDate,
+		Status:    "open",
+		CreatedBy: createdBy,
+		UpdatedBy: updatedBy,
+	}, nil
 }

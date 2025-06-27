@@ -22,3 +22,14 @@ func (repo *UserRepositoryImp) CreateUser(ctx context.Context, user *entity.User
 	}
 	return nil
 }
+
+func (repo *UserRepositoryImp) FindByUsername(ctx context.Context, username string) (*entity.User, error) {
+	var user entity.User
+	if err := repo.db.WithContext(ctx).Where("username = ?", username).First(&user).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, err
+		}
+		return nil, err
+	}
+	return &user, nil
+}

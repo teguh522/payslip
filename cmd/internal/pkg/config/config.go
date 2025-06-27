@@ -8,8 +8,9 @@ import (
 )
 
 type AppConfig struct {
-	AppPort string `mapstructure:"port"`
-	Mode    string `mapstructure:"mode"`
+	AppPort   string `mapstructure:"port"`
+	Mode      string `mapstructure:"mode"`
+	JWTSecret string `mapstructure:"jwt_secret"`
 }
 
 type DataBaseConfig struct {

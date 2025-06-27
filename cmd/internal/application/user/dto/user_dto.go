@@ -17,3 +17,12 @@ type CreateUserResponse struct {
 	CreatedBy string    `json:"created_by"`
 	UpdatedBy string    `json:"updated_by"`
 }
+
+type LoginUserRequest struct {
+	Username string `json:"username" validate:"required"`
+	Password string `json:"password" validate:"required"`
+}
+
+type LoginUserResponse struct {
+	AccessToken string `json:"access_token"`
+}
