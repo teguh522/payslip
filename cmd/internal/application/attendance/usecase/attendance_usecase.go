@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 
 	"github.com/teguh522/payslip/cmd/internal/application/attendance/command"
 	"github.com/teguh522/payslip/cmd/internal/application/attendance/dto"
@@ -20,7 +21,7 @@ func NewAttendanceUseCase(attendanceRepo repository.AttendanceRepository) *Atten
 }
 
 func (uc *AttendanceUseCase) Execute(ctx context.Context, cmd command.AttendanceCommand) (*dto.CreateAttendanceResponse, error) {
-	attendance, err := entity.NewAttendance(cmd.Date, cmd.CheckIn, cmd.CheckOut, cmd.CreatedBy,
+	attendance, err := entity.NewAttendance(cmd.Date, cmd.CheckIn, cmd.CreatedBy,
 		cmd.UpdatedBy, cmd.EmployeeID.String(), cmd.PeriodID.String())
 	if err != nil {
 		return nil, err
@@ -34,6 +35,22 @@ func (uc *AttendanceUseCase) Execute(ctx context.Context, cmd command.Attendance
 	return &dto.CreateAttendanceResponse{
 		ID:     attendance.ID.String(),
 		Date:   attendance.Date.Format("2006-01-02"),
-		Status: "success",
+		Status: "checked in successfully",
+	}, nil
+}
+
+func (uc *AttendanceUseCase) ExecuteCheckOut(ctx context.Context, cmd command.AttendanceCheckOutCommand) (*dto.AttendanceCheckOutResponse, error) {
+	attendance, err := entity.NewAttendanceCheckOut(cmd.Date, cmd.Checkout, cmd.UpdatedBy, cmd.EmployeeID.String(), cmd.PeriodID.String())
+	if err != nil {
+		return nil, err
+	}
+
+	err = uc.attendanceRepo.CreateAttendanceCheckOut(ctx, attendance)
+	if err != nil {
+		return nil, errors.New("failed to check out attendance: pastikan sudah melakukan check-in sebelumnya")
+	}
+
+	return &dto.AttendanceCheckOutResponse{
+		Status: "checked out successfully",
 	}, nil
 }

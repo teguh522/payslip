@@ -22,3 +22,22 @@ func (m *AuthMiddleware) RoleAdminMiddleware() gin.HandlerFunc {
 		}
 	}
 }
+
+func (m *AuthMiddleware) RoleUserMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		role, exists := c.Get("role")
+		if !exists {
+			c.JSON(403, gin.H{"error": "Forbidden"})
+			c.Abort()
+			return
+		}
+		if role == "user" {
+			c.Next()
+			return
+		} else {
+			c.JSON(403, gin.H{"error": "Forbidden, only user can access this resource"})
+			c.Abort()
+			return
+		}
+	}
+}

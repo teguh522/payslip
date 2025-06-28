@@ -8,4 +8,5 @@ import (
 
 type AttendanceRepository interface {
 	CreateAttendance(ctx context.Context, attendance *entity.Attendance) error
+	CreateAttendanceCheckOut(ctx context.Context, attendance *entity.Attendance) error
 }
