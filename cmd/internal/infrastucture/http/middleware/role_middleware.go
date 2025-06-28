@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (m *AuthMiddleware) RoleMiddleware() gin.HandlerFunc {
+func (m *AuthMiddleware) RoleAdminMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		role, exists := c.Get("role")
 		if !exists {

@@ -24,7 +24,8 @@ func NewRouter(handler *container.Handlers, cfg *config.Config, middlewares *con
 	attendancePeriodRoutes := r.Group("/attendance")
 	{
 		attendancePeriodRoutes.Use(middlewares.AuthMiddleware.Authenticate())
-		attendancePeriodRoutes.Use(middlewares.AuthMiddleware.RoleMiddleware())
+		attendancePeriodRoutes.POST("/", handler.AttendanceHandler.CreateAttendance)
+		attendancePeriodRoutes.Use(middlewares.AuthMiddleware.RoleAdminMiddleware())
 		attendancePeriodRoutes.POST("/periods", handler.AttendancePeriodHandler.CreateAttendancePeriod)
 	}
 

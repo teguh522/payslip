@@ -72,27 +72,3 @@ func (m *AuthMiddleware) Authenticate() gin.HandlerFunc {
 		}
 	}
 }
-
-func GetUserIDFromContext(c *gin.Context) (string, bool) {
-	userID, ok := c.Get("userID")
-	if !ok {
-		return "", false
-	}
-	return userID.(string), true
-}
-
-func GetUserNameFromContext(c *gin.Context) (string, bool) {
-	userName, ok := c.Get("userName")
-	if !ok {
-		return "", false
-	}
-	return userName.(string), true
-}
-
-func GetUserRoleFromContext(c *gin.Context) (string, bool) {
-	role, ok := c.Get("role")
-	if !ok {
-		return "", false
-	}
-	return role.(string), true
-}
