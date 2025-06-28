@@ -7,12 +7,13 @@ import (
 	overtime "github.com/teguh522/payslip/cmd/internal/domain/overtime/entity"
 	payRoll "github.com/teguh522/payslip/cmd/internal/domain/payroll/entity"
 	reimbursement "github.com/teguh522/payslip/cmd/internal/domain/reimbursement/entity"
+	"github.com/teguh522/payslip/cmd/internal/pkg/helper"
 )
 
 type AttendancePeriod struct {
 	ID             uuid.UUID `gorm:"type:uuid;primary_key;default:uuid_generate_v4()"`
-	StartDate      time.Time
-	EndDate        time.Time
+	StartDate      helper.DateOnly
+	EndDate        helper.DateOnly
 	Status         string
 	CreatedBy      string                        `gorm:"not null"`
 	UpdatedBy      string                        `gorm:"not null"`
@@ -24,7 +25,7 @@ type AttendancePeriod struct {
 	Payrolls       []payRoll.Payroll             `gorm:"foreignKey:PeriodID"`
 }
 
-func NewAttendancePeriod(startDate, endDate time.Time, createdBy, updatedBy string) (*AttendancePeriod, error) {
+func NewAttendancePeriod(startDate, endDate helper.DateOnly, createdBy, updatedBy string) (*AttendancePeriod, error) {
 	return &AttendancePeriod{
 		StartDate: startDate,
 		EndDate:   endDate,

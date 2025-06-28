@@ -1,15 +1,15 @@
 package command
 
-import "time"
+import "github.com/teguh522/payslip/cmd/internal/pkg/helper"
 
 type CreateAttendancePeriodCommand struct {
-	StartDate time.Time
-	EndDate   time.Time
+	StartDate helper.DateOnly
+	EndDate   helper.DateOnly
 	CreatedBy string
 	UpdatedBy string
 }
 
-func NewCreateAttendancePeriodCommand(startDate, endDate time.Time, createdBy, updatedBy string) *CreateAttendancePeriodCommand {
+func NewCreateAttendancePeriodCommand(startDate, endDate helper.DateOnly, createdBy, updatedBy string) *CreateAttendancePeriodCommand {
 	return &CreateAttendancePeriodCommand{
 		StartDate: startDate,
 		EndDate:   endDate,
