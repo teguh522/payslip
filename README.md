@@ -18,9 +18,11 @@
 
 8. untuk contoh payload postman bisa di import ```postman_collection.json```
 
-9. untuk menjalankan setelah git clone
+9. buat ```config.yaml``` silahkan copy dari config.sample
 
-10. run ```go mod tidy```
+10. untuk menjalankan setelah git clone
 
-11. ```go run cmd/app/main.go```
+11. run ```go mod tidy```
+
+12. ```go run cmd/app/main.go```
     

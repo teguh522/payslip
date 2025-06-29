@@ -1,0 +1,12 @@
+app:
+  port: "8080"
+  mode: "debug"
+  jwt_secret: "4mbGYFMiAEjBhcaAzvuPLczODEn9NILQvNyV3YLXCkk="
+
+database:
+  host: "localhost"
+  port: 
+  user: ""
+  password: ""
+  name: ""
+  sslmode: "disable"
