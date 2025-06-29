@@ -17,4 +17,10 @@
 7. gunakan pada bearer token untuk meng hit route api yang lain nya
 
 8. untuk contoh payload postman bisa di import ```postman_collection.json```
+
+9. untuk menjalankan setelah git clone
+
+10. run ```go mod tidy```
+
+11. ```go run cmd/app/main.go```
     
